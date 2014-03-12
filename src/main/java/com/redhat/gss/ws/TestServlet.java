@@ -17,7 +17,7 @@ import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 
 public class TestServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
   private static Logger log = Logger.getLogger(TestServlet.class);
   private static ObjectPool<Hello> pool = null;
@@ -33,7 +33,7 @@ public class TestServlet extends HttpServlet {
     pool = new GenericObjectPool<Hello>(new JaxWsClientPool(service));
   }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String count = request.getParameter("count");
     Hello port = null;
     
@@ -54,5 +54,5 @@ public class TestServlet extends HttpServlet {
         }
       }
     }
-	}
+  }
 }
