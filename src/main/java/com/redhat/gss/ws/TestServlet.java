@@ -24,19 +24,28 @@ public class TestServlet extends HttpServlet {
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String countStr = request.getParameter("count");
-    int count = 1;
-    if (countStr != null && countStr.length() > 0) {
-      try {
-        count = Integer.parseInt(countStr);
-      } catch(NumberFormatException nfe) {
-      }
-    }
+    String numThreadsStr = request.getParameter("threads");
+    int count = stringToInt(countStr, 1);
+    int numThreads = stringToInt(numThreadsStr, 10);
+
     try {
       Test t = new Test();
       t.init();
-      t.test(count);
+      t.test(numThreads, count);
     } catch( Exception e) {
-      log.error("", e);
+      log.error("Test FAILED.", e);
     }
+  }
+
+  private int stringToInt(String str, int fallback) {
+    int result = fallback;
+    if (str != null && str.length() > 0) {
+      try {
+         result = Integer.parseInt(str);
+      } catch(NumberFormatException nfe) {
+        //ignore
+      }
+    }
+    return result;
   }
 }

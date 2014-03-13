@@ -11,12 +11,12 @@ import javax.xml.ws.Service;
 import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 
-import java.util.logging.Logger;
+import org.jboss.logging.Logger;
 
 public class Test {
   private static ObjectPool<WrapperHack<Hello>> pool = null;
 
-  private static final Logger log = Logger.getLogger("Test");
+  private static final Logger log = Logger.getLogger(Test.class);
 
   public void init() {
     if (pool == null) {
@@ -32,22 +32,25 @@ public class Test {
   }
 
   public static void main(String[] args) throws Exception {
+    org.apache.log4j.BasicConfigurator.configure();
     Test t = new Test();
     t.init();
     t.test();
   }
 
   public void test() throws Exception {
-    test(1);
+    test(10, 1);
   }
 
-  public void test(int count) throws Exception {
+  public void test(int numThreads, int count) throws Exception {
+    log.info("Starting Client load test with " + numThreads + " threads and " + count + " invocations per thread");
     try {
-      CountDownLatch finishLatch = new CountDownLatch(20);
-      for (int i=0; i<20; i++) {
+      CountDownLatch finishLatch = new CountDownLatch(numThreads);
+      for (int i=0; i<numThreads; i++) {
         new Thread(new ClientRunner(count, finishLatch)).start();
       }
       finishLatch.await();
+      log.info("Test successfully completed.");
     } catch (InterruptedException ie) {
     }
   }
@@ -68,7 +71,7 @@ public class Test {
         wrapper = pool.borrowObject();
         Hello port = wrapper.getItem();
         for(int i=0 ;i < count; i++) {
-          log.info("Run: " + i);
+          log.debug("Run: " + i);
           port.hello("Kyle");
         }
       }
@@ -83,7 +86,7 @@ public class Test {
           }
         }
         finishLatch.countDown();
-        log.info("Thread complete.  Current latch count: " + finishLatch.getCount());
+        log.debug("Thread complete.  Current latch count: " + finishLatch.getCount());
       }
     }
   }

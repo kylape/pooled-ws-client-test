@@ -17,7 +17,7 @@ public class HelloImpl {
       //ignore
     }
     String greeting = "Hello, " + name + "!";
-    log.info(greeting);
+    log.debug(greeting);
     return greeting;
   }
 }
