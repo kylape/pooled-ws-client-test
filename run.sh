@@ -4,6 +4,11 @@
 ### This script is a big hack because I'm too lazy to put it in maven
 ###
 
+if [ -z "$JBOSS_HOME" ]; then
+  echo "Please set JBOSS_HOME"
+  exit 1
+fi
+
 # Which WS stack is installed in JBoss?  Choices are "native" and "cxf"
 wsStack="native" 
 
