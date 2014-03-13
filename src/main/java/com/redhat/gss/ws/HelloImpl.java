@@ -4,6 +4,7 @@ import java.util.Random;
 import javax.jws.WebService;
 import org.jboss.logging.Logger;
 
+// @WebService(portName="Hello")
 @WebService
 public class HelloImpl {
   private static Logger log = Logger.getLogger(Hello.class);

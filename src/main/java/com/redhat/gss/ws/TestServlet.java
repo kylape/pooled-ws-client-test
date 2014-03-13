@@ -3,6 +3,7 @@ package com.redhat.gss.ws;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.CountDownLatch;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,39 +21,22 @@ public class TestServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
 
   private static Logger log = Logger.getLogger(TestServlet.class);
-  private static ObjectPool<Hello> pool = null;
-
-  public void init() {
-    final QName ns = new QName("http://ws.gss.redhat.com/", "HelloImplService");
-    URL wsdl = null;
-    try {
-      wsdl = new URL("http://localhost:8080/hello/hello?wsdl");
-    } catch(MalformedURLException mue) {
-    }
-    final Service service = Service.create(wsdl, ns);
-    pool = new GenericObjectPool<Hello>(new JaxWsClientPool(service));
-  }
 
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String count = request.getParameter("count");
-    Hello port = null;
-    
-    try {
-      port = pool.borrowObject();
-      for(int i=0 ;i < Integer.parseInt(count); i++) {
-        log.info("Run: " + i);
-        port.hello("Kyle");
+    String countStr = request.getParameter("count");
+    int count = 1;
+    if (countStr != null && countStr.length() > 0) {
+      try {
+        count = Integer.parseInt(countStr);
+      } catch(NumberFormatException nfe) {
       }
     }
-    catch (Exception e) {
-      log.error("ERROR", e);
-    } finally {
-      if (port != null) {
-        try {
-        pool.returnObject(port);
-        } catch(Exception e) {
-        }
-      }
+    try {
+      Test t = new Test();
+      t.init();
+      t.test(count);
+    } catch( Exception e) {
+      log.error("", e);
     }
   }
 }
