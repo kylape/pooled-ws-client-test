@@ -22,8 +22,9 @@ public class Test {
     if (pool == null) {
       final QName ns = new QName("http://ws.gss.redhat.com/", "HelloImplService");
       URL wsdl = null;
+      String host = System.getProperty("gss.endpoint.host", "localhost:8080");
       try {
-        wsdl = new URL("http://localhost:8080/hello/hello?wsdl");
+        wsdl = new URL("http://" + host + "/hello/hello?wsdl");
       } catch(MalformedURLException mue) {
       }
       final Service service = Service.create(wsdl, ns);
