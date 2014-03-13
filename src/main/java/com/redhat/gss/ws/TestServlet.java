@@ -43,7 +43,7 @@ public class TestServlet extends HttpServlet {
       try {
          result = Integer.parseInt(str);
       } catch(NumberFormatException nfe) {
-        //ignore
+        log.warn("Invalid parameter: " + str + ". Using default value of " + fallback);
       }
     }
     return result;
