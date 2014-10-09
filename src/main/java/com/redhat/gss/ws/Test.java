@@ -12,6 +12,12 @@ import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 
 import org.jboss.logging.Logger;
+import java.util.List;
+import javax.xml.ws.handler.Handler;
+import java.util.Arrays;
+import java.util.Collections;
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.handler.soap.SOAPHandler;
 
 public class Test {
   private static ObjectPool<WrapperHack<Hello>> pool = null;
@@ -33,14 +39,14 @@ public class Test {
   }
 
   public static void main(String[] args) throws Exception {
-    org.apache.log4j.BasicConfigurator.configure();
+    // org.apache.log4j.BasicConfigurator.configure();
     Test t = new Test();
     t.init();
     t.test();
   }
 
   public void test() throws Exception {
-    test(10, 1);
+    test(10, 10000);
   }
 
   public void test(int numThreads, int count) throws Exception {
@@ -57,6 +63,7 @@ public class Test {
   }
 
   public class ClientRunner implements Runnable {
+    private final List<Handler> handlerChain = Collections.singletonList((Handler)new SimpleLoggingHandler());
     private final int count;
     private final CountDownLatch finishLatch;
 
@@ -71,9 +78,30 @@ public class Test {
       try {
         wrapper = pool.borrowObject();
         Hello port = wrapper.getItem();
+
+        long start = 0, end = 0;
+        long[] times = new long[1000];
         for(int i=0 ;i < count; i++) {
-          log.debug("Run: " + i);
+          ((BindingProvider)port).getBinding().setHandlerChain(handlerChain);
+          if((i % 1000) == 0) {
+            long avg = 0L;
+            for(int j=0; j<1000; j++) {
+              avg += times[j];
+            }
+            avg = avg/1000;
+            log.debugf("%d: %dms", i, avg);
+          }
+          if(log.isTraceEnabled()) {
+            log.trace("Run: " + i);
+          }
+          start = System.nanoTime();
           port.hello("Kyle");
+          end = System.nanoTime();
+          long elapsed = (end-start)/1000000;
+          times[i % 1000] = elapsed;
+          if(log.isTraceEnabled()) {
+            log.tracef("Elapsed time: %dms", elapsed);
+          }
         }
       }
       catch (Exception e) {
