@@ -17,12 +17,12 @@ public class SimpleLoggingHandler extends GenericSOAPHandler<LogicalMessageConte
   private static Logger log = Logger.getLogger("com.redhat.gss.handlers");
 
   public boolean handleInbound(MessageContext ctx) {
-    log.info("Inbound:  " + getClass().getName());
+    log.debug("Inbound:  " + getClass().getName());
     return true;
   }
 
   public boolean handleOutbound(MessageContext ctx) {
-    log.info("Outbound: " + getClass().getName());
+    log.debug("Outbound: " + getClass().getName());
     return true;
   }
 }
