@@ -93,6 +93,7 @@ public class Test {
         long start = 0, end = 0;
         long[] times = new long[1000];
         for(int i=0 ;i < count; i++) {
+          ((BindingProvider)port).getBinding().setHandlerChain(handlerChain);
           if((i % 1000) == 0) {
             long avg = 0L;
             for(int j=0; j<1000; j++) {
