@@ -20,6 +20,7 @@ import javax.xml.ws.BindingProvider;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.PortInfo;
 import javax.xml.ws.handler.HandlerResolver;
+import javax.xml.ws.spi.Provider;
 
 public class Test {
   private static ObjectPool<WrapperHack<Hello>> pool = null;
@@ -28,6 +29,8 @@ public class Test {
   private static final Logger log = Logger.getLogger(Test.class);
 
   public void init() {
+    log.warn("Provider class:       " + Provider.provider().getClass().getName());
+    log.warn("Provider classloader: " + Provider.provider().getClass().getClassLoader());
     if (pool == null) {
       final QName ns = new QName("http://ws.gss.redhat.com/", "HelloImplService");
       URL wsdl = null;

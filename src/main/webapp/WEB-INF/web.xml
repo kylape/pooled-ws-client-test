@@ -3,19 +3,19 @@
 <web-app>
   <display-name>Hello</display-name>
   <servlet>
-    <servlet-name>Hello</servlet-name>
-    <servlet-class>com.redhat.gss.ws.HelloImpl</servlet-class>
-  </servlet>
-  <servlet>
     <servlet-name>Test</servlet-name>
     <servlet-class>com.redhat.gss.ws.TestServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Hello</servlet-name>
-    <url-pattern>/hello</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
     <servlet-name>Test</servlet-name>
     <url-pattern>/test</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>cxf</servlet-name>
+    <servlet-class>com.redhat.gss.ws.MyCXFServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>cxf</servlet-name>
+    <url-pattern>/*</url-pattern>
   </servlet-mapping>
 </web-app>
