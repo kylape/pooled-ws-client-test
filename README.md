@@ -8,7 +8,7 @@ the servlet is invoked, it will create a pool of proxy objects and concurrently
 invoke the JAX-WS endpoint using the pool.
 
 ###Building/Deploying
-Build the project by running `ant install`.  Deploy the project to a local
+Build the project by running `mvn install`.  Deploy the project to a local
 JBoss by running `mvn jboss-as:deploy`.
 
 ###Running the Test
