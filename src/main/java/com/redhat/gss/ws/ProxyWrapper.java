@@ -1,9 +1,9 @@
 package com.redhat.gss.ws;
 
-public class WrapperHack<T> {
+public class ProxyWrapper<T> {
   private final T item;
 
-  public WrapperHack(T item) {
+  public ProxyWrapper(T item) {
     this.item = item;
   }
 

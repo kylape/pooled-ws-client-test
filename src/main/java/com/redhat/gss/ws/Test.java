@@ -14,7 +14,7 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.jboss.logging.Logger;
 
 public class Test {
-  private static ObjectPool<WrapperHack<Hello>> pool = null;
+  private static ObjectPool<ProxyWrapper<Hello>> pool = null;
 
   private static final Logger log = Logger.getLogger(Test.class);
 
@@ -28,7 +28,7 @@ public class Test {
       } catch(MalformedURLException mue) {
       }
       final Service service = Service.create(wsdl, ns);
-      pool = new GenericObjectPool<WrapperHack<Hello>>(new JaxWsClientPoolFactory(service));
+      pool = new GenericObjectPool<ProxyWrapper<Hello>>(new JaxWsClientPoolFactory(service));
     }
   }
 
@@ -66,7 +66,7 @@ public class Test {
     }
 
     public void run() {
-      WrapperHack<Hello> wrapper = null;
+      ProxyWrapper<Hello> wrapper = null;
       
       try {
         wrapper = pool.borrowObject();

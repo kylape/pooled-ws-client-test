@@ -7,7 +7,7 @@ import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 import javax.xml.namespace.QName;
 
-public class JaxWsClientPoolFactory extends BasePooledObjectFactory<WrapperHack<Hello>> {
+public class JaxWsClientPoolFactory extends BasePooledObjectFactory<ProxyWrapper<Hello>> {
   private Service service = null;
   private static final QName qname = new QName("http://ws.gss.redhat.com/", "HelloImplPort");
 
@@ -15,12 +15,12 @@ public class JaxWsClientPoolFactory extends BasePooledObjectFactory<WrapperHack<
     this.service = service;
   }
 
-  public synchronized WrapperHack<Hello> create() {
-    WrapperHack<Hello> h = new WrapperHack<Hello>(service.getPort(qname, Hello.class));
+  public synchronized ProxyWrapper<Hello> create() {
+    ProxyWrapper<Hello> h = new ProxyWrapper<Hello>(service.getPort(qname, Hello.class));
     return h;
   }
 
-  public PooledObject<WrapperHack<Hello>> wrap(WrapperHack<Hello> obj) {
-    return new DefaultPooledObject<WrapperHack<Hello>>(obj);
+  public PooledObject<ProxyWrapper<Hello>> wrap(ProxyWrapper<Hello> obj) {
+    return new DefaultPooledObject<ProxyWrapper<Hello>>(obj);
   }
 }
